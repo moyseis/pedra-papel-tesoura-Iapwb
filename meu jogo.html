@@ -1,93 +1,449 @@
-<!DOCTYPE html>
+
+        <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pedra, Papel ou Tesoura</title>
-  <style>
-    * {margin: 0; padding: 0; box-sizing: border-box;}
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #5b247a, #1bcedf); 
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-    }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      text-shadow: 1px 1px 4px #000;
-    }
-    #botoes {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-      margin-bottom: 25px;
-    }
-    button {
-      padding: 12px 20px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 10px;
-      background-color: #ffffff;
-      color: #5b247a;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      transition: 0.3s;
-    }
-    button:hover {
-      background-color: #f0f0f0;
-      transform: scale(1.05);
-    }
-    p {
-      margin-top: 10px;
-      font-size: 1.1rem;
-      text-shadow: 1px 1px 2px #000;
-    }
-    @media (max-width: 600px) {
-      #botoes {
-        flex-direction: column;
-        align-items: center;
-      }
-      button {
-        width: 100%;
-        max-width: 200px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedra, Papel ou Tesoura</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .scoreboard {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .score {
+            text-align: center;
+        }
+
+        .score h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .score-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #ffeb3b;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-area {
+            margin: 30px 0;
+        }
+
+        .choices {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .choice-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            font-size: 4em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .choice-btn:hover {
+            transform: translateY(-5px) scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #ffeb3b;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .choice-btn:active {
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        .battle-area {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 40px 0;
+            min-height: 200px;
+        }
+
+        .player-choice, .computer-choice {
+            text-align: center;
+        }
+
+        .player-choice h3, .computer-choice h3 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .choice-display {
+            font-size: 6em;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .vs {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ffeb3b;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .result {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 30px 0;
+            padding: 20px;
+            border-radius: 15px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .result.win {
+            background: rgba(76, 175, 80, 0.3);
+            color: #4caf50;
+            border: 2px solid #4caf50;
+        }
+
+        .result.lose {
+            background: rgba(244, 67, 54, 0.3);
+            color: #f44336;
+            border: 2px solid #f44336;
+        }
+
+        .result.tie {
+            background: rgba(255, 193, 7, 0.3);
+            color: #ffc107;
+            border: 2px solid #ffc107;
+        }
+
+        .reset-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .reset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-history {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .choices {
+                gap: 10px;
+            }
+            
+            .choice-btn {
+                min-width: 80px;
+                min-height: 80px;
+                font-size: 2.5em;
+                padding: 15px;
+            }
+            
+            .choice-display {
+                width: 100px;
+                height: 100px;
+                font-size: 4em;
+            }
+            
+            .battle-area {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>Pedra, Papel ou Tesoura</h1>
-  <div id="botoes">
-    <button onclick="jogar('pedra')">🪨 Pedra</button>
-    <button onclick="jogar('papel')">📄 Papel</button>
-    <button onclick="jogar('tesoura')">✂️ Tesoura</button>
-  </div>
-  <p id="resultado">Escolha uma opção!</p>
-  <p id="placar">Jogador: 0 | Computador: 0</p>
+    <div class="game-container">
+        <h1>🎮 Pedra, Papel ou Tesoura</h1>
+        
+        <div class="scoreboard">
+            <div class="score">
+                <h3>Você</h3>
+                <div class="score-value" id="playerScore">0</div>
+            </div>
+            <div class="score">
+                <h3>Computador</h3>
+                <div class="score-value" id="computerScore">0</div>
+            </div>
+        </div>
 
-  <script>
-    const op = ["pedra", "papel", "tesoura"];
-    let j = 0, c = 0;
+        <div class="game-area">
+            <p style="font-size: 1.2em; margin-bottom: 20px;">Escolha sua jogada:</p>
+            
+            <div class="choices">
+                <button class="choice-btn" data-choice="rock">🪨</button>
+                <button class="choice-btn" data-choice="paper">📄</button>
+                <button class="choice-btn" data-choice="scissors">✂️</button>
+            </div>
 
-    function jogar(escolha) {
-      const comp = op[Math.floor(Math.random() * 3)];
-      const ganhei = (escolha === "pedra" && comp === "tesoura") ||
-                     (escolha === "papel" && comp === "pedra") ||
-                     (escolha === "tesoura" && comp === "papel");
+            <div class="battle-area">
+                <div class="player-choice">
+                    <h3>Sua Escolha</h3>
+                    <div class="choice-display" id="playerDisplay">❓</div>
+                </div>
+                <div class="vs">VS</div>
+                <div class="computer-choice">
+                    <h3>Computador</h3>
+                    <div class="choice-display" id="computerDisplay">❓</div>
+                </div>
+            </div>
 
-      const msg = escolha === comp ? "Empate!" : ganhei ? "Você ganhou!" : "Você perdeu!";
-      if (ganhei) j++; else if (escolha !== comp) c++;
+            <div class="result" id="result">
+                Faça sua escolha para começar!
+            </div>
 
-      resultado.textContent = `Você escolheu ${escolha}, o computador ${comp}. ${msg}`;
-      placar.textContent = `Jogador: ${j} | Computador: ${c}`;
-    }
-  </script>
+            <button class="reset-btn" onclick="resetGame()">🔄 Resetar Jogo</button>
+        </div>
+
+        <div class="game-history">
+            <h3>📊 Histórico das Últimas Jogadas</h3>
+            <div id="historyList"></div>
+        </div>
+    </div>
+
+    <script>
+        
+        let playerScore = 0;
+        let computerScore = 0;
+        let gameHistory = [];
+        
+        
+        const choiceEmojis = {
+            rock: '🪨',
+            paper: '📄',
+            scissors: '✂️'
+        };
+        
+        
+        const choiceNames = {
+            rock: 'Pedra',
+            paper: 'Papel',
+            scissors: 'Tesoura'
+        };
+
+        
+        function getComputerChoice() {
+            const choices = ['rock', 'paper', 'scissors'];
+            return choices[Math.floor(Math.random() * choices.length)];
+        }
+
+        
+        function determineWinner(playerChoice, computerChoice) {
+            if (playerChoice === computerChoice) {
+                return 'tie';
+            }
+            
+            if (
+                (playerChoice === 'rock' && computerChoice === 'scissors') ||
+                (playerChoice === 'paper' && computerChoice === 'rock') ||
+                (playerChoice === 'scissors' && computerChoice === 'paper')
+            ) {
+                return 'win';
+            } else {
+                return 'lose';
+            }
+        }
+
+        
+        function updateGameDisplay(playerChoice, computerChoice, result) {
+            
+            document.getElementById('playerDisplay').textContent = choiceEmojis[playerChoice];
+            document.getElementById('computerDisplay').textContent = choiceEmojis[computerChoice];
+            
+            
+            const resultElement = document.getElementById('result');
+            resultElement.className = 'result ' + result;
+            
+            switch(result) {
+                case 'win':
+                    resultElement.textContent = '🎉 Você ganhou!';
+                    playerScore++;
+                    break;
+                case 'lose':
+                    resultElement.textContent = '😞 Você perdeu!';
+                    computerScore++;
+                    break;
+                case 'tie':
+                    resultElement.textContent = '🤝 Empate!';
+                    break;
+            }
+            
+            
+            document.getElementById('playerScore').textContent = playerScore;
+            document.getElementById('computerScore').textContent = computerScore;
+        }
+
+        
+        function updateHistory(playerChoice, computerChoice, result) {
+            const historyItem = {
+                player: playerChoice,
+                computer: computerChoice,
+                result: result,
+                timestamp: new Date().toLocaleTimeString()
+            };
+            
+            gameHistory.unshift(historyItem);
+            
+            
+            if (gameHistory.length > 5) {
+                gameHistory.pop();
+            }
+            
+            displayHistory();
+        }
+
+        
+        function displayHistory() {
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = '';
+            
+            gameHistory.forEach(item => {
+                const historyDiv = document.createElement('div');
+                historyDiv.className = 'history-item';
+                
+                let resultText = '';
+                switch(item.result) {
+                    case 'win':
+                        resultText = '✅ Vitória';
+                        break;
+                    case 'lose':
+                        resultText = '❌ Derrota';
+                        break;
+                    case 'tie':
+                        resultText = '🤝 Empate';
+                        break;
+                }
+                
+                historyDiv.innerHTML = `
+                    <strong>${item.timestamp}</strong> - 
+                    Você: ${choiceEmojis[item.player]} vs 
+                    PC: ${choiceEmojis[item.computer]} = 
+                    ${resultText}
+                `;
+                
+                historyList.appendChild(historyDiv);
+            });
+        }
+
+        
+        function playGame(playerChoice) {
+            const computerChoice = getComputerChoice();
+            const result = determineWinner(playerChoice, computerChoice);
+            
+            updateGameDisplay(playerChoice, computerChoice, result);
+            updateHistory(playerChoice, computerChoice, result);
+        }
+
+        
+        function resetGame() {
+            playerScore = 0;
+            computerScore = 0;
+            gameHistory = [];
+            
+            document.getElementById('playerScore').textContent = '0';
+            document.getElementById('computerScore').textContent = '0';
+            document.getElementById('playerDisplay').textContent = '❓';
+            document.getElementById('computerDisplay').textContent = '❓';
+            document.getElementById('result').textContent = 'Faça sua escolha para começar!';
+            document.getElementById('result').className = 'result';
+            document.getElementById('historyList').innerHTML = '';
+        }
+
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const choiceButtons = document.querySelectorAll('.choice-btn');
+            
+            choiceButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const playerChoice = this.dataset.choice;
+                    playGame(playerChoice);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
