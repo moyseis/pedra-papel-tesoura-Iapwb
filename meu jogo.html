@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedra, Papel ou Tesoura</title>
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #5b247a, #1bcedf); 
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 4px #000;
+    }
+    #botoes {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 25px;
+    }
+    button {
+      padding: 12px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      background-color: #ffffff;
+      color: #5b247a;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #f0f0f0;
+      transform: scale(1.05);
+    }
+    p {
+      margin-top: 10px;
+      font-size: 1.1rem;
+      text-shadow: 1px 1px 2px #000;
+    }
+    @media (max-width: 600px) {
+      #botoes {
+        flex-direction: column;
+        align-items: center;
+      }
+      button {
+        width: 100%;
+        max-width: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Pedra, Papel ou Tesoura</h1>
+  <div id="botoes">
+    <button onclick="jogar('pedra')">🪨 Pedra</button>
+    <button onclick="jogar('papel')">📄 Papel</button>
+    <button onclick="jogar('tesoura')">✂️ Tesoura</button>
+  </div>
+  <p id="resultado">Escolha uma opção!</p>
+  <p id="placar">Jogador: 0 | Computador: 0</p>
+
+  <script>
+    const op = ["pedra", "papel", "tesoura"];
+    let j = 0, c = 0;
+
+    function jogar(escolha) {
+      const comp = op[Math.floor(Math.random() * 3)];
+      const ganhei = (escolha === "pedra" && comp === "tesoura") ||
+                     (escolha === "papel" && comp === "pedra") ||
+                     (escolha === "tesoura" && comp === "papel");
+
+      const msg = escolha === comp ? "Empate!" : ganhei ? "Você ganhou!" : "Você perdeu!";
+      if (ganhei) j++; else if (escolha !== comp) c++;
+
+      resultado.textContent = `Você escolheu ${escolha}, o computador ${comp}. ${msg}`;
+      placar.textContent = `Jogador: ${j} | Computador: ${c}`;
+    }
+  </script>
+</body>
+</html>
